@@ -9,5 +9,5 @@ class ActivationFunction(ABC):
 
 	@staticmethod
 	@abstractmethod
-	def get_limit(input_size, size):
+	def derivative(x):
 		pass
