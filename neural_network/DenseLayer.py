@@ -24,6 +24,8 @@ class DenseLayer:
 		#Backpropagation
 		self.input = None
 		self.Z = None
+		self.dW = None
+		self.db = None
 
 	def initialize(self, input_size):
 		self.input_size = input_size
@@ -36,3 +38,14 @@ class DenseLayer:
 		self.Z = Z
 		A = self.activation.activate(Z)
 		return A
+
+	def backward(self, dA):
+		dZ = dA * self.activation.derivative(self.Z)
+		self.dW = self.input.T @ dZ
+		self.db = np.sum(dZ, axis=0, keepdims=True)
+		dA_prev = dZ @ self.dW.T
+		return dA_prev
+
+	def adjust(self, lr):
+		self.weights -= lr * self.dW
+		self.biases -= lr * self.db
